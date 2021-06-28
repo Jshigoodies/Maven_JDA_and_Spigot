@@ -1,0 +1,6 @@
+name: ${name}
+version: ${version}
+description: ${description}
+author: Jshi
+main: ${mainClass}
+api-version: 1.17

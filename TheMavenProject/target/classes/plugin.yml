@@ -1,0 +1,4 @@
+name: TheMavenProject
+version: 1.0-SNAPSHOT
+description: Spigot plugin made with Maven
+main: org.example.jshi.Jason.TheMavenProject.Main

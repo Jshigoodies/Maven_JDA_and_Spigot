@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.goodies</groupId>
+  <artifactId>Discord_and_Spigot</artifactId>
+  <name>Discord_and_Spigot</name>
+  <version>1.0</version>
+  <description>Discord integrate to minecraft</description>
+  <build>
+    <sourceDirectory>src/main/java</sourceDirectory>
+    <defaultGoal>clean package</defaultGoal>
+    <resources>
+      <resource>
+        <filtering>true</filtering>
+        <directory>src/main/resources</directory>
+        <includes>
+          <include>plugin.yml</include>
+        </includes>
+      </resource>
+    </resources>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.8.1</version>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.2.4</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  <repositories>
+    <repository>
+      <id>spigot-repo</id>
+      <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+    </repository>
+    <repository>
+      <id>dv8tion</id>
+      <name>m2-dv8tion</name>
+      <url>https://m2.dv8tion.net/releases</url>
+    </repository>
+  </repositories>
+  <properties>
+    <maven.complier.target>1.8</maven.complier.target>
+    <mainClass>org.goodies.jshi.Jason.Discord_and_Spigot.Main</mainClass>
+    <java.version>1.8</java.version>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <encoding>UTF-8</encoding>
+  </properties>
+</project>

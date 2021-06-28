@@ -1,0 +1,6 @@
+name: Discord_and_Spigot
+version: 1.0
+description: Discord integrate to minecraft
+author: Jshi
+main: org.goodies.jshi.Jason.Discord_and_Spigot.Main
+api-version: 1.17
