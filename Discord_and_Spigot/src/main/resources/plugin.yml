@@ -4,3 +4,7 @@ description: ${description}
 author: Jshi
 main: ${mainClass}
 api-version: 1.17
+
+commands:
+  discord:
+    description: used to talk to discord from minecraft

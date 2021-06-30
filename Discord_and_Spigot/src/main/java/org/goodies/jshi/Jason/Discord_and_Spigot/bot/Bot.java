@@ -1,20 +1,21 @@
 package org.goodies.jshi.Jason.Discord_and_Spigot.bot;
 
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
-import net.dv8tion.jda.api.entities.Activity;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.GuildChannel;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 import org.goodies.jshi.Jason.Discord_and_Spigot.Main;
+import org.goodies.jshi.Jason.Discord_and_Spigot.communication.DiscordMessagesManager;
 import org.jetbrains.annotations.NotNull;
 
 import javax.security.auth.login.LoginException;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -23,67 +24,124 @@ import java.util.Scanner;
 public class Bot extends ListenerAdapter {
 
     private static JDA jda;
-    public static String prefix = "~";
     private final Main plugin;
     private Guild guild;
-    private List<TextChannel> listCh;
+    private List<TextChannel> channelList;
+    private final String token;
+    private EmbedBuilder embed;
+
+    public String guildID;
+    public String channelID;
+
+    private TextChannel mainChannel;
+
+    private DiscordMessagesManager manager;
 
     //i know this looks stupid, but I'm literally open to suggestions on how to make discord and minecraft work together
 
-    public Bot(Main main) {
+    public Bot(Main main, String _token) {
         plugin = main;
-        setUp();
+        token = _token;
+        botSetUp();
     }
 
-    public void setUp() {
-        File f = new File("C:\\Users\\Jshi\\Desktop\\JavaWorkSpace2\\Discord_and_Spigot\\src\\token.dat");
-        Scanner input = null;
-        try {
-            input = new Scanner(f);
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        String token = input.nextLine();
+    private void botSetUp() {
         JDABuilder building = JDABuilder.createDefault(token);
         building.addEventListeners(this);
         try {
             jda = building.build();
         } catch (LoginException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            plugin.getServer().getConsoleSender().sendMessage(ChatColor.RED + "[Discord_and_Spigot]: Please provide a token");
+            return;
         }
         //done building
 
         jda.getPresence().setStatus(OnlineStatus.DO_NOT_DISTURB);
         jda.getPresence().setActivity(Activity.watching("FKING ANIME"));
-
-        input.close();
-
-        //organizing is good
-        additionalSetUp();
     }
 
-    private void additionalSetUp() //this adds the channels that the bot can send to
+    private void embedSetUp()
     {
-        guild = jda.getGuildById("772158782758715403");
-        listCh = guild.getTextChannels();
+        embed = new EmbedBuilder();
+        embed.setTitle(":salad: Sever Is Up", "https://github.com/Jshigoodies");
+        embed.setColor(Color.GREEN);
+    }
+
+    private void channelSetUp()
+    {
+        try {
+            guild = jda.getGuildById(guildID);
+            channelList = guild.getTextChannels();
+        }
+        catch(Exception e)
+        {
+            plugin.getServer().getConsoleSender().sendMessage(ChatColor.RED + "[Discord_and_Spigot]: Error, setting up the channel does not work");
+        }
+
+        try{
+            mainChannel = jda.getTextChannelById(channelID);
+            mainChannel.sendMessage(embed.build()).queue();
+        }
+        catch(Exception e)
+        {
+            plugin.getServer().getConsoleSender().sendMessage(ChatColor.RED + "[Discord_and_Spigot]: Main channel set up did not work");
+        }
+    }
+
+    public TextChannel getMainChannel()
+    {
+        return mainChannel;
+    }
+
+    public List<TextChannel> getChannelList()
+    {
+        return channelList;
+    }
+    public void setManager(DiscordMessagesManager _manager)
+    {
+        manager = _manager;
     }
 
     // Events
     @Override
     public void onReady(@NotNull ReadyEvent event) {
-        plugin.getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[THE FKING BOT IS SPEAKING] Bot setup success!");
+        embedSetUp();
+        channelSetUp();
+        plugin.getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[Discord_and_Spigot]: Bot setup success!");
+
     }
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event)
     {
+        if(event.getAuthor().isBot())
+        {
+            return;
+        }
         if(event.getMessage().getContentRaw().equalsIgnoreCase("!maven"))
         {
             event.getMessage().getChannel().sendMessage("good job, you are using maven to start a discord bot by running a spigot server").queue();
         }
+        if(event.getMessage().getContentRaw().equalsIgnoreCase("!refresh"))
+        {
+            try {
+                channelSetUp();
+                event.getChannel().sendMessage("channels refreshed").queue();
+            }
+            catch(Exception e)
+            {
+                event.getChannel().sendMessage("Error with refreshing channels").queue();
+            }
+        }
+
+        String msg = event.getMessage().getContentRaw();
+        String author = event.getAuthor().getName();
+        String channelName = event.getChannel().getName();
+
+        manager.onDiscordChat(msg, author, channelName);
     }
+
+
 
 }
