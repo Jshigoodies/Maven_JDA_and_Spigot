@@ -134,6 +134,10 @@ public class Bot extends ListenerAdapter {
                 event.getChannel().sendMessage("Error with refreshing channels").queue();
             }
         }
+        if(event.getMessage().getContentRaw().equalsIgnoreCase("!diamonds"))
+        {
+            event.getChannel().sendMessage(".........").queue();
+        }
 
         String msg = event.getMessage().getContentRaw();
         String author = event.getAuthor().getName();

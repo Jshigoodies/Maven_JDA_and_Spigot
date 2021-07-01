@@ -37,7 +37,7 @@ public class ApiToApi {
         Set<Player> playerSet = sendCMD.getCommunicators().keySet();
         for(Player player : playerSet)
         {
-            player.sendMessage(ChatColor.BLUE + completeMessage);
+            player.sendMessage(completeMessage);
         }
     }
 

@@ -1,5 +1,7 @@
 package org.goodies.jshi.Jason.Discord_and_Spigot.communication;
 
+import org.bukkit.ChatColor;
+
 public class DiscordMessagesManager {
 
     private static ApiToApi api;
@@ -11,7 +13,7 @@ public class DiscordMessagesManager {
 
     public void onDiscordChat(String msg, String author, String channel)
     {
-        String complete = "(" + channel + ") " + "[" + author + "]: " + msg;
+        String complete = ChatColor.DARK_AQUA + "(" + channel + ") " + ChatColor.BLUE + "[" + author + "]: " + ChatColor.WHITE + msg;
 
         api.sendToMinecraft(complete);
     }

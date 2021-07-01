@@ -2,6 +2,8 @@ org\goodies\jshi\Jason\Discord_and_Spigot\Main.class
 org\goodies\jshi\Jason\Discord_and_Spigot\file\DataManager.class
 org\goodies\jshi\Jason\Discord_and_Spigot\bot\Bot.class
 org\goodies\jshi\Jason\Discord_and_Spigot\communication\ApiToApi.class
+org\goodies\jshi\Jason\Discord_and_Spigot\events\CountingEvents.class
 org\goodies\jshi\Jason\Discord_and_Spigot\commands\SendingCommand.class
 org\goodies\jshi\Jason\Discord_and_Spigot\communication\DiscordMessagesManager.class
+org\goodies\jshi\Jason\Discord_and_Spigot\file\Counter.class
 org\goodies\jshi\Jason\Discord_and_Spigot\communication\MinecraftMessagesManager.class
