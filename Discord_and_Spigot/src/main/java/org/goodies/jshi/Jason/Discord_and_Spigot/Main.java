@@ -20,10 +20,8 @@ import org.goodies.jshi.Jason.Discord_and_Spigot.file.Counter;
 import org.goodies.jshi.Jason.Discord_and_Spigot.file.DataManager;
 
 import java.awt.*;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
 
 public class Main extends JavaPlugin {
 
@@ -32,6 +30,15 @@ public class Main extends JavaPlugin {
     private Counter countConfig;
     private SendingCommand sendCmd;
     private ApiToApi api;
+
+    private String[] insults = new String[]{
+            "OMG how bad are you %s?",
+            "%s.... why did you die?" ,
+            "BRUHHHHH. %s stop dying!",
+            "LOL did %s just die?",
+            "This person. < %s > just died :D",
+            "Stop, stop dying %s",
+    };
 
     @Override
     public void onEnable()
@@ -104,6 +111,16 @@ public class Main extends JavaPlugin {
                 amount = countConfig.getConfig().getInt("death." + player.getName());
             }
             countConfig.getConfig().set("death." + player.getName(), (amount + 1));
+
+            Random r = new Random();
+            int index_r = r.nextInt(insults.length);
+            String insultThem = String.format(insults[index_r], player.getName());
+            EmbedBuilder showDeath = new EmbedBuilder();
+            showDeath.setTitle(insultThem);
+            showDeath.setColor(Color.BLACK);
+
+            bot.getMainChannel().sendMessage(showDeath.build()).queue();
+            showDeath.clear();
         }
         countConfig.saveConfig();
     }
