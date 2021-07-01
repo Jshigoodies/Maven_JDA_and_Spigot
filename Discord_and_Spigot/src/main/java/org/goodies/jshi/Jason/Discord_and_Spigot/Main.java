@@ -115,8 +115,8 @@ public class Main extends JavaPlugin {
         //figure it out
         int largest = -1;
         try{
-            Set<String> listDiamonds = countConfig.getConfig().getConfigurationSection(name).getKeys(true);
-            for(String s : listDiamonds)
+            Set<String> listPeople = countConfig.getConfig().getConfigurationSection(name).getKeys(true);
+            for(String s : listPeople)
             {
                 int num = countConfig.getConfig().getInt(name + "." + s);
                 if(num > largest)
@@ -127,12 +127,16 @@ public class Main extends JavaPlugin {
             }
 
             String leaderboard = "";
-            listDiamonds = mapLeaderBoard.keySet(); //replace a better listDiamonds players. It's in alphabetical order. The names.
-            for(String s : listDiamonds)
+            listPeople = mapLeaderBoard.keySet(); //replace a better listDiamonds players. It's in alphabetical order. The names.
+            for(String s : listPeople)
             {
-                if(largest == mapLeaderBoard.get(s))
+                if(largest == mapLeaderBoard.get(s) && name.equalsIgnoreCase("diamonds"))
                 {
                     leaderboard = leaderboard + "(x-ray user) " + s + ": " + mapLeaderBoard.get(s) + "\n"; // <name> <amount of diamonds or something>
+                }
+                else if(largest == mapLeaderBoard.get(s) && name.equalsIgnoreCase("death"))
+                {
+                    leaderboard = leaderboard + "(bad at minecraft) " + s + ": " + mapLeaderBoard.get(s) + "\n"; // <name> <amount of diamonds or something>
                 }
                 else
                 {
@@ -143,7 +147,14 @@ public class Main extends JavaPlugin {
 
             EmbedBuilder scoreboard = new EmbedBuilder();
             scoreboard.setTitle("Leaderboard");
-            scoreboard.setDescription("Minecraft Diamonds");
+            if(name.equalsIgnoreCase("diamonds"))
+            {
+                scoreboard.setDescription("Minecraft Diamonds");
+            }
+            else if(name.equalsIgnoreCase("death"))
+            {
+                scoreboard.setDescription("Minecraft Deaths");
+            }
             scoreboard.setColor(Color.PINK);
             scoreboard.addField("", leaderboard, true);
             sendToChannel.sendMessage(scoreboard.build()).queue();
@@ -151,7 +162,8 @@ public class Main extends JavaPlugin {
         }
         catch(Exception e)
         {
-            bot.getMainChannel().sendMessage("!diamonds does not work").queue();
+            bot.getMainChannel().sendMessage("Does not work :/. The command that you just sent").queue();
+            e.printStackTrace();
         }
     }
 }

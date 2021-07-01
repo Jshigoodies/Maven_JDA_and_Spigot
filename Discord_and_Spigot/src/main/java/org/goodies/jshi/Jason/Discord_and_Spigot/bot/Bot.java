@@ -139,6 +139,11 @@ public class Bot extends ListenerAdapter {
             plugin.getCounterConfigList("diamonds", event.getChannel());
         }
 
+        if(event.getMessage().getContentRaw().equalsIgnoreCase("!deaths"))
+        {
+            plugin.getCounterConfigList("death", event.getChannel());
+        }
+
         String msg = event.getMessage().getContentRaw();
         String author = event.getAuthor().getName();
         String channelName = event.getChannel().getName();
