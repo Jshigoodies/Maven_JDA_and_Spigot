@@ -54,7 +54,7 @@ public class ApiToApi {
         boolean exists = false;
         for (TextChannel textChannel : list) {
             if (textChannel.getName().equalsIgnoreCase(channelToSend)) {
-                textChannel.sendMessage(completeMessage).queue();
+                textChannel.sendMessage("```diff\n" + "+" + completeMessage + "\n```").queue();
                 exists = true;
                 break;
             }

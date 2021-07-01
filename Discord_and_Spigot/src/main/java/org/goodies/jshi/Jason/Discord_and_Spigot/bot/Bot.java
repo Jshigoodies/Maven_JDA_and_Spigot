@@ -136,7 +136,7 @@ public class Bot extends ListenerAdapter {
         }
         if(event.getMessage().getContentRaw().equalsIgnoreCase("!diamonds"))
         {
-            event.getChannel().sendMessage(".........").queue();
+            plugin.getCounterConfigList("diamonds", event.getChannel());
         }
 
         String msg = event.getMessage().getContentRaw();
@@ -145,7 +145,4 @@ public class Bot extends ListenerAdapter {
 
         manager.onDiscordChat(msg, author, channelName);
     }
-
-
-
 }

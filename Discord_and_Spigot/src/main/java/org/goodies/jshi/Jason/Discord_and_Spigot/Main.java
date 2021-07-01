@@ -1,6 +1,7 @@
 package org.goodies.jshi.Jason.Discord_and_Spigot;
 
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.MessageChannel;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -20,6 +21,9 @@ import org.goodies.jshi.Jason.Discord_and_Spigot.file.DataManager;
 
 import java.awt.*;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 public class Main extends JavaPlugin {
 
@@ -68,6 +72,7 @@ public class Main extends JavaPlugin {
         getServer().getConsoleSender().sendMessage(ChatColor.RED + "[Discord_and_Spigot]: Plugin is Disabled");
     }
 
+    //All of this can be ignored. Not important.
     public void configSetUp()
     {
         if(!data.getConfig().contains("bot"))
@@ -103,8 +108,50 @@ public class Main extends JavaPlugin {
         countConfig.saveConfig();
     }
 
-    public void getCounterConfigList(String name)
+    private Map<String, Integer> mapLeaderBoard;
+    public void getCounterConfigList(String name, MessageChannel sendToChannel)
     {
+        mapLeaderBoard = new TreeMap<String, Integer>();
         //figure it out
+        int largest = -1;
+        try{
+            Set<String> listDiamonds = countConfig.getConfig().getConfigurationSection(name).getKeys(true);
+            for(String s : listDiamonds)
+            {
+                int num = countConfig.getConfig().getInt(name + "." + s);
+                if(num > largest)
+                {
+                    largest = num;
+                }
+                mapLeaderBoard.put(s, num);
+            }
+
+            String leaderboard = "";
+            listDiamonds = mapLeaderBoard.keySet(); //replace a better listDiamonds players. It's in alphabetical order. The names.
+            for(String s : listDiamonds)
+            {
+                if(largest == mapLeaderBoard.get(s))
+                {
+                    leaderboard = leaderboard + "(x-ray user) " + s + ": " + mapLeaderBoard.get(s) + "\n"; // <name> <amount of diamonds or something>
+                }
+                else
+                {
+                    leaderboard = leaderboard + s + ": " + mapLeaderBoard.get(s) + "\n"; // <name> <amount of diamonds or something>
+                }
+
+            }
+
+            EmbedBuilder scoreboard = new EmbedBuilder();
+            scoreboard.setTitle("Leaderboard");
+            scoreboard.setDescription("Minecraft Diamonds");
+            scoreboard.setColor(Color.PINK);
+            scoreboard.addField("", leaderboard, true);
+            sendToChannel.sendMessage(scoreboard.build()).queue();
+            scoreboard.clear();
+        }
+        catch(Exception e)
+        {
+            bot.getMainChannel().sendMessage("!diamonds does not work").queue();
+        }
     }
 }
