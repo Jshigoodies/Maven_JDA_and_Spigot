@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChannelTab implements TabCompleter {
-    List<String> arguments;
+    List<String> arguments = new ArrayList<String>();
     Bot bot;
     public ChannelTab(Bot _bot)
     {
