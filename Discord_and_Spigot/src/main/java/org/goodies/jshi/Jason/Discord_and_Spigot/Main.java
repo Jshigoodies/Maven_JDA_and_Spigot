@@ -11,6 +11,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.goodies.jshi.Jason.Discord_and_Spigot.bot.Bot;
+import org.goodies.jshi.Jason.Discord_and_Spigot.commands.ChannelTab;
 import org.goodies.jshi.Jason.Discord_and_Spigot.commands.SendingCommand;
 import org.goodies.jshi.Jason.Discord_and_Spigot.communication.ApiToApi;
 import org.goodies.jshi.Jason.Discord_and_Spigot.communication.DiscordMessagesManager;
@@ -64,6 +65,7 @@ public class Main extends JavaPlugin {
         api.setBot(bot); //set discord bot
         this.bot.setManager(obj1);
 
+        getCommand("discord").setTabCompleter(new ChannelTab(this.bot));
         getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[Discord_and_Spigot]: Plugin is Enabled");
     }
 
